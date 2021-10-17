@@ -41,6 +41,14 @@ struct ContainsSubstringValidator : Validator {
     }
 }
 
+struct InSetValidator : Validator {
+    let set: Set<Int>
+
+    func validate(_ value: Int) -> Bool {
+        return set.contains(value)
+    }
+}
+
 let ccv = CharacterCountValidator(range: 1...10)
 var trueOutcome = ccv.validate("yes")
 var falseOutcome = ccv.validate("hell no this shouldn\'t validate")
@@ -63,3 +71,12 @@ let falseContainsWord = "This is not a dog"
 
 print("Contains word for \(trueContainsWord) is:  \(cssv.validate(trueContainsWord))")
 print("Contains word for \(falseContainsWord) is:  \(cssv.validate(falseContainsWord))")
+
+let isv = InSetValidator(set: [112, 114, 115, 118, 116])
+
+let trueSetMember = 114
+let falseSetMember = 120
+
+print("Contains member for \(trueSetMember) is:  \(isv.validate(trueSetMember))")
+print("Contains word for \(falseSetMember) is:  \(isv.validate(falseSetMember))")
+
