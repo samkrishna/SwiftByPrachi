@@ -41,6 +41,8 @@ struct ContainsSubstringValidator : Validator {
     }
 }
 
+// struct Thing<S, T> where S : Collection and T.Element == Int
+// as a way of thinking about types
 struct InSetValidator<T: Hashable>: Validator {
     let allowedValues: Set<T>
 
