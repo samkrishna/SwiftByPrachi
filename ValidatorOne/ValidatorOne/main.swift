@@ -41,11 +41,11 @@ struct ContainsSubstringValidator : Validator {
     }
 }
 
-struct InSetValidator : Validator {
-    let set: Set<Int>
+struct InSetValidator<T: Hashable>: Validator {
+    let allowedValues: Set<T>
 
-    func validate(_ value: Int) -> Bool {
-        return set.contains(value)
+    func validate(_ value: T) -> Bool {
+        return allowedValues.contains(value)
     }
 }
 
@@ -72,7 +72,7 @@ let falseContainsWord = "This is not a dog"
 print("Contains word for \(trueContainsWord) is:  \(cssv.validate(trueContainsWord))")
 print("Contains word for \(falseContainsWord) is:  \(cssv.validate(falseContainsWord))")
 
-let isv = InSetValidator(set: [112, 114, 115, 118, 116])
+let isv = InSetValidator(allowedValues: [112, 114, 115, 118, 116])
 
 let trueSetMember = 114
 let falseSetMember = 120
