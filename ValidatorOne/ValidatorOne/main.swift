@@ -36,12 +36,8 @@ struct ContainsSubstringValidator : Validator {
     let locale: Locale?
 
     func validate(_ value: String) -> Bool {
-        if let _ = value.range(of: substring, options: options, locale: locale) {
-            return true
-        }
-        else {
-            return false;
-        }
+        // From Prachi: Usually if you’ve got a if { return} you should use guard instead
+        return value.range(of: substring, options: options, locale: locale) != nil
     }
 }
 
