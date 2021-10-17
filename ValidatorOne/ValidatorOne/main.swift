@@ -29,6 +29,22 @@ struct CharacterSetValidator : Validator {
         return intersection.isEmpty
     }
 }
+
+struct ContainsSubstringValidator : Validator {
+    let substring: String
+    let options: String.CompareOptions
+    let locale: Locale?
+
+    func validate(_ value: String) -> Bool {
+        if let _ = value.range(of: substring, options: options, locale: locale) {
+            return true
+        }
+        else {
+            return false;
+        }
+    }
+}
+
 let ccv = CharacterCountValidator(range: 1...10)
 var trueOutcome = ccv.validate("yes")
 var falseOutcome = ccv.validate("hell no this shouldn\'t validate")
@@ -43,3 +59,11 @@ let falseCharSet = "abc"
 
 print("character set validation for \(trueCharSet) is \(csv.validate(trueCharSet))")
 print("character set validation for \(falseCharSet) is \(csv.validate(falseCharSet))")
+
+let cssv = ContainsSubstringValidator(substring: "test", options: String.CompareOptions.caseInsensitive, locale: nil)
+
+let trueContainsWord = "This is a test"
+let falseContainsWord = "This is not a dog"
+
+print("Contains word for \(trueContainsWord) is:  \(cssv.validate(trueContainsWord))")
+print("Contains word for \(falseContainsWord) is:  \(cssv.validate(falseContainsWord))")
