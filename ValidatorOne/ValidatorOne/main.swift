@@ -12,6 +12,14 @@ protocol Validator {
     func validate(_: ValidatedValue) -> Bool
 }
 
+struct CharacterCountValidator : Validator {
+    let range: ClosedRange<Int>
+
+    func validate(_ value: String) -> Bool {
+        return range.contains(value.count)
+    }
+}
+
 // I was close to this one
 //
 // struct InRangeValidator<RangeExpression> where RangeExpression.Bound == Int : Validator
@@ -25,6 +33,37 @@ struct InRangeValidator<RangeExpression> : Validator where RangeExpression : Swi
         return range.contains(value)
     }
 }
+
+/*
+ So important points:
+
+ You know that the type you’re validating must be the same as the range. That should tell you immediately that you’ll need a generic type to represent that, but how?
+
+ If you have a protocol with an associated type, you must use a generic for that protocol, otherwise you can’t actually reference an instance of the protocol.
+
+ That’s why we use RangeExpression as a generic type parameter.
+
+ Since that type already has an associated type for its “elements”, we just refer to those rather than create our own type for it.
+
+ One thing I want to emphasize. I don’t think there’s any other solution to the problem
+
+ So once you think it through and map out the relationships between types, the code won’t compile till you have it right
+
+ SK: Ooooohh…. so this is at some level about TYPE relationships?
+
+ PG: It’s all about type relationships
+ Every generic and conformance and constraint is relating types
+
+ All of these problems are basically asking you to relate a type (your Validator), to other types (sets, range expressions, etc)
+
+ With range expressions, you need to relate it to two types:
+
+ The range expression and the range expression’s bound
+
+ So when you solve these, think through the type relationships
+
+ And develop an understanding of what tools to use to express the relationships you need
+*/
 
 struct CharacterSetValidator : Validator {
     let disallowedCharSet: CharacterSet
