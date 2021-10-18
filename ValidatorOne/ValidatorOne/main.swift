@@ -12,11 +12,17 @@ protocol Validator {
     func validate(_: ValidatedValue) -> Bool
 }
 
-struct CharacterCountValidator : Validator {
-    let range: ClosedRange<Int>
+// I was close to this one
+//
+// struct InRangeValidator<RangeExpression> where RangeExpression.Bound == Int : Validator
+//
+// I can see how the line above is a hot mess syntax-wise
+struct InRangeValidator<RangeExpression> : Validator where RangeExpression : Swift.RangeExpression {
+    let range: RangeExpression
 
-    func validate(_ value: String) -> Bool {
-        return range.contains(value.count)
+    // NOTE: Prachi gave me the solution after an hour of head-banging against protocol conformance declaration
+    func validate(_ value: RangeExpression.Bound) -> Bool {
+        return range.contains(value)
     }
 }
 
