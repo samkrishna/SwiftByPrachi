@@ -15,10 +15,12 @@ struct OrValidator<Value> : Validator {
     }
 
     func validate(_ value: Value) -> Bool {
-        let validatedValues: [Bool] = children.map { (validator) in
-            validator.validate(value)
+        for child in children {
+            if child.validate(value) {
+                return true
+            }
         }
 
-        return validatedValues.filter{$0 == true}.count > 0
+        return false
     }
 }
