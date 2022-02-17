@@ -10,8 +10,8 @@ import Foundation
 struct AndValidator<Value> : Validator {
     let children: [AnyValidator<Value>]
 
-    init<Child>(_ childValidator: Child) where Child : Validator, Child.Value == Value {
-        self.children = [AnyValidator(childValidator)]
+    init(_ children: [AnyValidator<Value>]) {
+        self.children = children
     }
 
     func validate(_ value: Value) -> Bool {
