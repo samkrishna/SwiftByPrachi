@@ -8,17 +8,17 @@
 import Foundation
 
 struct AndValidator<Value> : Validator {
-    let childValidator: [AnyValidator<Value>]
+    let children: [AnyValidator<Value>]
 
     init<Child>(_ childValidator: Child) where Child : Validator, Child.Value == Value {
-        self.childValidator = [AnyValidator(childValidator)]
+        self.children = [AnyValidator(childValidator)]
     }
 
     func validate(_ value: Value) -> Bool {
-        let validatedValues: [Bool] = childValidator.map { (validator) in
+        let validatedValues: [Bool] = children.map { (validator) in
             validator.validate(value)
         }
 
-        return validatedValues.filter{$0 == true}.count == childValidator.count
+        return validatedValues.filter{$0 == true}.count == children.count
     }
 }
