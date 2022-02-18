@@ -15,12 +15,6 @@ struct AndValidator<Value> : Validator {
     }
 
     func validate(_ value: Value) -> Bool {
-        for child in children {
-            if !child.validate(value) {
-                return false
-            }
-        }
-
-        return true
+        return children.first { !$0.validate(value) } == nil
     }
 }
